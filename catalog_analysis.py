@@ -85,7 +85,6 @@ movies = [
 
 
 def average_rating(movies):
-
     all_rating = 0
 
     for movie in movies:
@@ -95,7 +94,6 @@ def average_rating(movies):
 
 
 def catalog_age_stats(movies, current_year=2026):
-
     movie_ages = []
 
     for movie in movies:
@@ -109,12 +107,10 @@ def catalog_age_stats(movies, current_year=2026):
 
 
 def duration_in_hours(minutes):
-
     return f"{minutes // 60}ч {minutes % 60}м"
 
 
 def rating_tier(rating):
-
     if rating >= 9:
         return "шедевр"
     elif rating >= 7:
@@ -124,7 +120,6 @@ def rating_tier(rating):
 
 
 def decade_label(year):
-
     match year:
         case _ if year > 2020:
             return "новые"
@@ -152,7 +147,6 @@ def decade_label(year):
 
 
 def count_long_movies(movies, threshold=120):
-
     count = 0
     for movie in movies:
         if movie["duration_min"] > threshold:
@@ -176,7 +170,6 @@ def make_slug(title):
 
 
 def format_report_line(movie):
-
     title = normalize_title(movie["title"])
     duration = duration_in_hours(movie["duration_min"])
     genres = ", ".join(sorted(movie["genres"]))
@@ -188,7 +181,6 @@ def format_report_line(movie):
 
 
 def titles_sorted_by_rating(movies):
-
     sorted_movies = sorted(
         movies,
         key=lambda movie: movie["rating"],
@@ -213,3 +205,32 @@ def top_n_by_rating(movies, n=3):
     for movie in sorted_movies[:n]:
         result.append((movie["title"], movie["rating"]))
     return result
+
+
+def count_by_genre(movies):
+    counts = {}
+
+    for movie in movies:
+        for genre in movie["genres"]:
+            counts[genre] = counts.get(genre, 0) + 1
+
+    return counts
+
+
+def actor_filmography(movies):
+    filmography = {}
+
+    for movie in movies:
+        for actor in movie["actors"]:
+            if actor not in filmography:
+                filmography[actor] = []
+
+            filmography[actor].append(movie["title"])
+
+    return filmography
+
+
+average = average_rating(movies)
+above_average = {
+    movie["title"]: movie["rating"] for movie in movies if movie["rating"] > average
+}
